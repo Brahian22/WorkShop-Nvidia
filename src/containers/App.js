@@ -1,10 +1,10 @@
-import Filter from '../components/Filter';
+import CardComponent from '../components/CardComponent';
 
 
 function App() {
   return (
     <div className="App">
-      <Filter />
+      <CardComponent/>
     </div>
   );
 }
