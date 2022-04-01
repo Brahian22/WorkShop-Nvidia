@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Form, Image } from "react-bootstrap";
+import { Accordion, Form, Image } from "react-bootstrap";
 
 const Filter = () => {
   const [productos, setProductos] = useState([]);
@@ -28,10 +28,11 @@ const Filter = () => {
   const filtrar = (terminoBusqueda) => {
     var resultadosBusqueda = tablaProductos.filter((elemento) => {
       if (
-        elemento.title
-          .toString()
-          .toLowerCase()
-          .includes(terminoBusqueda.toLowerCase())
+        elemento.title.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
+        || elemento.industry_segment.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
+        || elemento.primary_topic.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
+        || elemento.session_type.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
+        || elemento.lenguage.toString().toLowerCase().includes(terminoBusqueda.toLowerCase())
       ) {
         return elemento;
       }
@@ -46,6 +47,11 @@ const Filter = () => {
   return (
     <div className="App">
       <div className="filtro-checkbox">
+        <div>
+          <p>Filters</p>
+          <p>Clear</p>
+        </div>
+
         <div className="containerInput">
           <input
             className="input-buscar"
@@ -56,65 +62,99 @@ const Filter = () => {
           <button className="btn-buscar">Buscar</button>
         </div>
         <div>
-          <Form>
-            {["checkbox"].map((type) => (
-              <div key={`default-${type}`} className="mb-3">
-                <Form.Check
-                  type={type}
-                  id={`default-${type}`}
-                  label={`default ${type}`}
-                />
+          <Accordion defaultActiveKey="0">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>Industry Segment</Accordion.Header>
+              <Accordion.Body>
+                  {productos && productos.map((producto) => (
+                      <Form>
+                      {["checkbox"].map((type) => (
+                        <div key={`default-${producto.id}`} className="mb-3">
+                          <Form.Check
+                            type={type}
+                            id={`default-${type}`}
+                            label={producto.industry_segment}
+                          />
+                        </div>
+                      ))}
+                    </Form>
+                  ))}                
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1">
+              <Accordion.Header>Primary Topic</Accordion.Header>
+              <Accordion.Body>
+              {productos && productos.map((producto) => (
+                      <Form>
+                      {["checkbox"].map((type) => (
+                        <div key={`default-${producto.id}`} className="mb-3">
+                          <Form.Check
+                            type={type}
+                            id={`default-${type}`}
+                            label={producto.primary_topic}
+                          />
+                        </div>
+                      ))}
+                    </Form>
+                  ))}
+              </Accordion.Body>
+            </Accordion.Item>
 
-                <Form.Check
-                  type={type}
-                  id={`default-${type}`}
-                  label={`default ${type}`}
-                />
+            <Accordion.Item eventKey="2">
+              <Accordion.Header>Other Collections</Accordion.Header>
+              <Accordion.Body>
+                  {productos && productos.map((producto) => (
+                      <Form>
+                      {["checkbox"].map((type) => (
+                        <div key={`default-${producto.id}`} className="mb-3">
+                          <Form.Check
+                            type={type}
+                            id={`default-${type}`}
+                            label={producto.lenguage}
+                          />
+                        </div>
+                      ))}
+                    </Form>
+                  ))}                
+              </Accordion.Body>
+            </Accordion.Item>
 
-                <Form.Check
-                  type={type}
-                  id={`default-${type}`}
-                  label={`default ${type}`}
-                />
+            <Accordion.Item eventKey="3">
+              <Accordion.Header>Session Type</Accordion.Header>
+              <Accordion.Body>
+                  {productos && productos.map((producto, index) => (
+                      <Form>
+                      {["checkbox"].map((type) => (
+                        <div key={index} className="mb-3">
+                          <Form.Check
+                            type={type}
+                            id={`default-${type}`}
+                            label={producto.session_type}
+                          />
+                        </div>
+                      ))}
+                    </Form>
+                  ))}                
+              </Accordion.Body>
+            </Accordion.Item>
 
-                <Form.Check
-                  type={type}
-                  id={`default-${type}`}
-                  label={`default ${type}`}
-                />
+            <Accordion.Item eventKey="4">
+              <Accordion.Header>Industry Segment</Accordion.Header>
+              <Accordion.Body>
+                  {
+                    this.state.productos.map((producto, index) => (
+                      <div producto={producto} key={producto.id} className="mb-3">
+                      <label>
+                      <input type="checkbox" />
+                      {producto.session_type}
+                    </label>
+                    </div>
+                  ))}                
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
 
-                <Form.Check
-                  type={type}
-                  id={`default-${type}`}
-                  label={`default ${type}`}
-                />
-              </div>
-            ))}
-          </Form>
         </div>
-      </div>
-
-      <div className="table-responsive">
-        <table className="table table-sm table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Drescripcion</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {productos &&
-              productos.map((producto) => (
-                <tr key={producto.id}>
-                  <td>{producto.id}</td>
-                  <td>{producto.title}</td>
-                  <td>{producto.description}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
       </div>
     </div>
   );
